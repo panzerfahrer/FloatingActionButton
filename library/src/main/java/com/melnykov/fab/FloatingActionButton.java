@@ -29,9 +29,6 @@ import android.widget.AbsListView;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
 
-import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -327,13 +324,12 @@ public class FloatingActionButton extends ImageButton {
                 }
             }
             int translationY = visible ? 0 : height + getMarginBottom();
-            if (animate) {
-                ViewPropertyAnimator.animate(this).setInterpolator(mInterpolator)
-                    .setDuration(TRANSLATE_DURATION_MILLIS)
-                    .translationY(translationY);
-            } else {
-                ViewHelper.setTranslationY(this, translationY);
-            }
+
+            this.animate()
+                .setInterpolator(mInterpolator)
+                .setDuration(animate ? TRANSLATE_DURATION_MILLIS : 0)
+                .translationY(translationY)
+                .start();
 
             // On pre-Honeycomb a translated view is still clickable, so we need to disable clicks manually
             if (!hasHoneycombApi()) {
